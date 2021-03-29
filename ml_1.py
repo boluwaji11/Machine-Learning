@@ -11,17 +11,47 @@ digits = load_digits()
 # print(digits.target[13])
 # print(digits.target.shape)
 
-print(digits.images[13])
+# print(digits.images[13])
 
 import matplotlib.pyplot as plt
 
-figure, axes = plt.subplots(nrows=4, ncols=6, figsize=(6, 4))
+# figure, axes = plt.subplots(nrows=4, ncols=6, figsize=(6, 4))
 
-for item in zip(axes.ravel(), digits.images, digits.target):
-    axes, image, target = item
-    axes.imshow(image, cmap=plt.cm.gray_r)
-    axes.set_xticks([])  # remove x-axis tick marks
-    axes.set_yticks([])  # remove y-axis tick marks
-    axes.set_title(target)  # the target value of the image
-plt.tight_layout()
-plt.show()
+# # Zip function bundles the 3 iterables and produces one iterable
+# for item in zip(axes.ravel(), digits.images, digits.target):
+#     axes, image, target = item
+#     axes.imshow(
+#         image, cmap=plt.cm.gray_r
+#     )  # displays multichannel (RGB) or single-channel ("grayscale") image data
+#     axes.set_xticks([])  # remove x-axis tick marks
+#     axes.set_yticks([])  # remove y-axis tick marks
+#     axes.set_title(target)  # the target value of the image
+# plt.tight_layout()
+# plt.show()
+
+
+from sklearn.model_selection import train_test_split
+
+data_train, data_test, target_train, target_test = train_test_split(
+    digits.data, digits.target, random_state=11
+)  # Random_state for reproducibility
+
+print(data_train.shape)
+print(target_train.shape)
+print(data_test.shape)
+
+from sklearn.neighbors import KNeighborsClassifier
+
+knn = KNeighborsClassifier()
+
+# load the training data into the model using the fit method
+# Note: the KNeighborsClassifier fit method does not do calculations, it just loads the model
+knn.fit(X=data_train, y=target_train)
+# Returns an array containing the predicted class of each test image:
+# creates an array of digits
+
+predicted = knn.predict(X=data_test)
+
+expected = target_test
+print(predicted[:20])
+print(expected[:20])
